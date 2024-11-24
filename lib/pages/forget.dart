@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:music/auth.dart';
 import 'package:music/pages/register_page.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
-
-  // Import your AuthService class
 
 class ForgotPasswordScreen extends StatefulWidget {
   @override
@@ -39,8 +36,6 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Password reset email sent! Check your inbox.")),
       );
-      // You can navigate to the login screen or show a success message.
-       // Replace with your login screen route
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>RegisterPage())); 
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -72,7 +67,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     ? CircularProgressIndicator(color: Colors.white)
                     : Text("Send Reset Email"),
                 style: ElevatedButton.styleFrom(
-                  // backgroundColor: Colors.blue, // You can choose your color
+                  
                 ),
               ),
             ],

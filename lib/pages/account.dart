@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:music/pages/login_page.dart';
 import 'package:music/pages/register_page.dart';
 import 'package:music/themes/dark.dart';
-import 'package:shared_preferences/shared_preferences.dart'; // Import shared_preferences
+import 'package:shared_preferences/shared_preferences.dart'; 
 import 'package:music/pages/profile.dart';
 
 class AccountPage extends StatefulWidget {
@@ -13,21 +13,20 @@ class AccountPage extends StatefulWidget {
 }
 
 class _AccountPageState extends State<AccountPage> {
-  String _name = '';
-  String _email = '';
+  String name = '';
+  String email = '';
 
   @override
   void initState() {
     super.initState();
-    _loadUserData(); // Load user data when the page is created
+    loadUserData(); 
   }
 
-  // Function to load name and email from SharedPreferences
-  void _loadUserData() async {
+  void loadUserData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      _name = prefs.getString('name') ?? 'Guest'; // Default to 'Guest' if not set
-      _email = prefs.getString('email') ?? 'No Email'; // Default to 'No Email' if not set
+      name = prefs.getString('name') ?? 'Guest'; // Default to 'Guest' if not set
+      email = prefs.getString('email') ?? 'No Email'; // Default to 'No Email' if not set
     });
   }
 
@@ -52,7 +51,7 @@ class _AccountPageState extends State<AccountPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ProfileSection(name: _name), // Pass the name to ProfileSection
+              ProfileSection(name: name), 
               Divider(color: Colors.grey),
               SettingsSection(
                 title: 'Account',
@@ -63,7 +62,7 @@ class _AccountPageState extends State<AccountPage> {
                   ),
                   SettingsOption(
                     title: 'Email',
-                    subtitle: _email, // Display the email
+                    subtitle: email, 
                   ),
                 ],
               ),
@@ -119,7 +118,7 @@ class _AccountPageState extends State<AccountPage> {
                   onPressed: ()
                   {       
                    FirebaseAuth.instance.signOut();
-            // Navigate to a login screen
+            
             Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (context) => RegisterPage()),
@@ -151,7 +150,7 @@ class ProfileSection extends StatelessWidget {
         backgroundImage: AssetImage('assets/profile.jpg'),
       ),
       title: Text(
-        name, // Display the retrieved name here
+        name, 
         style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
       ),
       subtitle: Text(
@@ -169,7 +168,6 @@ class ProfileSection extends StatelessWidget {
   }
 }
 
-// Keep other classes (SettingsSection, SettingsOption, etc.) unchanged
 
 class SettingsSection extends StatelessWidget {
   final String title;
@@ -213,7 +211,7 @@ class SettingsOption extends StatelessWidget {
         style: TextStyle(color: Colors.grey),
       ),
       onTap: () {
-        // Add option tap logic here
+        
       },
     );
   }

@@ -47,7 +47,6 @@ class RegisterPage extends StatelessWidget {
                 ElevatedButton(
                   onPressed: () {
                     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>SignUpPage()));
-                    // Handle Sign Up button press
                     print('Sign Up clicked');
                   },
                   style: ElevatedButton.styleFrom(
@@ -63,7 +62,6 @@ class RegisterPage extends StatelessWidget {
                 const SizedBox(height: 20),
                 OutlinedButton.icon(
                   onPressed: () {
-                    // Handle Continue with Google button press
                     print('Continue with Google clicked');
                   },
                   style: OutlinedButton.styleFrom(
@@ -98,7 +96,6 @@ class RegisterPage extends StatelessWidget {
                     onTap: () {
                       
                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>LoginPage()));
-                      // print('Login clicked');
                     },
                     child:  Text(
                       'Login',

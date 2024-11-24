@@ -21,17 +21,13 @@ class SearchPage extends StatelessWidget {
 
     return Scaffold(
       
-      appBar: AppBar(
-        // backgroundColor: Colors.black,
-        // elevation: 0,
-        
+      appBar: AppBar( 
         elevation: 0,
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
-         
-          iconSize: 28, // Change the color of the back button here
+          iconSize: 28, 
           onPressed: () {
-            Navigator.pop(context); // This will take you back to the previous page
+            Navigator.pop(context); 
           },
         ),
         actions: [
@@ -46,21 +42,21 @@ class SearchPage extends StatelessWidget {
               },
               child: Center(
                 child: Container(
-                  height: 40, // Adjust the height of the search bar container
-                  width: MediaQuery.of(context).size.width * 0.85, // Adjust width accordingly
+                  height: 40, 
+                  width: MediaQuery.of(context).size.width * 0.85, 
                   decoration: BoxDecoration(
                     color: Colors.grey[800],
                     borderRadius: BorderRadius.circular(18),
                   ),
                   child: TextField(
-                    // readOnly: true, // Make it clickable but non-editable
+                    // readOnly: true, 
                     decoration: InputDecoration(
                       hintText: "Artists, Songs, or Podcasts",
                       hintStyle: TextStyle(color: Colors.grey[400]),
                       prefixIcon: Icon(
                         Icons.search,
                         color: Colors.grey[400],
-                        size: 24, // Adjust the icon size
+                        size: 24, 
                       ),
                       filled: true,
                       fillColor: Colors.grey[800],
@@ -114,7 +110,6 @@ class SearchPage extends StatelessWidget {
                   final category = categories[index];
                   return GestureDetector(
                     onTap: () {
-                      // Navigate to a different page for each category
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -205,7 +200,7 @@ class CategoryPage extends StatelessWidget {
               'Welcome to the $categoryName Page!',
               style: TextStyle(fontSize: 24, color: Colors.white),
             ),
-            // You can add more content specific to the category here.
+            
           ],
         ),
       ),

@@ -16,11 +16,11 @@ class _ProfileState extends State<Profile> {
   @override
   void initState() {
     super.initState();
-    _loadData();
+    loadData();
   }
 
-  // Load the store name and email from SharedPreferences
-  _loadData() async {
+  
+   loadData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       storeName = prefs.getString('storeName') ?? 'Logan Ji'; // Default value if not found
@@ -61,7 +61,6 @@ class _ProfileState extends State<Profile> {
               child: Image.asset("assets/images/logan.png"),
             ),
             SizedBox(height: 16),
-            // Display the store name retrieved from SharedPreferences
             Text(
               storeName,
               style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
@@ -74,7 +73,6 @@ class _ProfileState extends State<Profile> {
                   style: TextStyle(color: Colors.grey),
                 ),
                 Spacer(),
-                // Display the email retrieved from SharedPreferences
                 Text(
                   email,
                   style: TextStyle(color: Colors.white),
@@ -148,7 +146,7 @@ class _ProfileState extends State<Profile> {
             Container(
               child: ElevatedButton(
                 onPressed: () {
-                  // Handle Update Password
+                   // Update Password
                   Navigator.push(context, MaterialPageRoute(builder:(context)=>UpdatePasswordScreen()));
                 },
                 child: Text("Update Password"),
@@ -157,21 +155,20 @@ class _ProfileState extends State<Profile> {
             Container(
               child: ElevatedButton(
                 onPressed: () {
-                  // Handle Delete Account
                   Navigator.push(context, MaterialPageRoute(builder:(context)=>DeleteAccountScreen()));
                 },
                 child: Text("Delete Account"),
               ),
             ),
-            Container(
-              child: ElevatedButton(
-                onPressed: () {
-                  // Handle Delete Account
-                  Navigator.push(context, MaterialPageRoute(builder:(context)=>ForgotPasswordScreen()));
-                },
-                child: Text("Forget Password"),
-              ),
-            ),
+            // Container(
+            //   child: ElevatedButton(
+            //     onPressed: () {
+            //       // Handle Delete Account
+            //       Navigator.push(context, MaterialPageRoute(builder:(context)=>ForgotPasswordScreen()));
+            //     },
+            //     child: Text("Forget Password"),
+            //   ),
+            // ),
           ],
         ),
       ),

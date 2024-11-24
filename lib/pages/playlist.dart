@@ -25,7 +25,6 @@ class MusicPlayerScreen extends StatefulWidget {
 }
 
 class _MusicPlayerScreenState extends State<MusicPlayerScreen> {
-  // final AudioPlayer audioPlayer = AudioPlayer();
   List<Song> songs = [
     Song(
       title: "Trek upio",

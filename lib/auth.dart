@@ -51,32 +51,23 @@ class AuthService {
   }
 
 
-
-  // Change the current user's password
  Future<bool> changePassword(String oldPassword, String newPassword) async {
   try {
     // Get the current user
     User? user = _auth.currentUser;
 
     if (user != null) {
-      // Re-authenticate the user
       AuthCredential credential = EmailAuthProvider.credential(
         email: user.email!,
         password: oldPassword,
       );
-
       await user.reauthenticateWithCredential(credential);
-
-      // Update the password
       await user.updatePassword(newPassword);
-      // print("Password updated successfully");
       return true;
     } else {
-      // print("No user is currently signed in.");
       return false;
     }
   } catch (e) {
-    // print("Error changing password: $e");
     return false;
   }
 }
@@ -85,13 +76,10 @@ class AuthService {
       User? user = _auth.currentUser;
       if (user != null) {
         await user.delete();
-        // print("Account deleted successfully.");
         return true;
       }
-      // print("No user is currently signed in.");
       return false;
     } catch (e) {
-      // print("Error deleting account: $e");
       return false;
     }
   }

@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:music/pages/home_page.dart';
 import 'package:music/pages/register_page.dart';
 import 'package:music/pages/signup_page.dart';
 
@@ -12,14 +14,21 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    _navigateToSignUp();
+    checkLogin();
+
   }
 
-  _navigateToSignUp() async {
-    await Future.delayed(Duration(seconds: 3), () {});
-    Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) =>RegisterPage()));
-  }
+   checkLogin() async {
+    await Future.delayed(Duration(seconds: 3));
+    User? user =FirebaseAuth.instance.currentUser;
+   if(user!=null)
+   {
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>HomeScreen()));
+   }
+   else{
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>RegisterPage()));
+   }
+   }
 
   @override
   Widget build(BuildContext context) {
