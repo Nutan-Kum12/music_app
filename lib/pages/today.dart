@@ -8,7 +8,6 @@ class FeaturingToday extends StatelessWidget {
     {'title': 'Jazz Classics', 'image': 'assets/images/unsplash.png'},
     {'title': 'Chill Vibes', 'image': 'assets/images/unsplash.png'},
     {'title': 'Workout Beats', 'image': 'assets/images/unsplash.png'},
-    // Add more items as needed
   ];
 
   @override
@@ -47,7 +46,6 @@ class FeaturingToday extends StatelessWidget {
       padding: const EdgeInsets.only(left: 8.0),
       child: InkWell(
         onTap: () {
-          // Navigate to a specific screen based on the category
           if (item['title'] == 'English Songs') {
             Navigator.push(
               context,
@@ -124,7 +122,6 @@ class FeaturingToday extends StatelessWidget {
   }
 }
 
-// Create different pages for each category
 class EnglishSongsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

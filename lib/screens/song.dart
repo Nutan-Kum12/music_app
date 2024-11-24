@@ -12,9 +12,8 @@ class MusicPlayerScree extends StatefulWidget {
 }
 
 class _MusicPlayerScreenState extends State<MusicPlayerScree> {
-  // Slider current position
-  double _currentSliderValue = 60; // in seconds
-  final double _maxDuration = 210; // 3 minutes 30 seconds = 210 seconds
+  double _currentSliderValue = 60; 
+  final double _maxDuration = 210; 
 
   // Convert seconds to "MM:SS" format
   String _formatTime(double seconds) {
@@ -33,7 +32,7 @@ class _MusicPlayerScreenState extends State<MusicPlayerScree> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const SizedBox(height: 50), // Top padding
+             SizedBox(height: 50),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -64,7 +63,7 @@ class _MusicPlayerScreenState extends State<MusicPlayerScree> {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
                 image: const DecorationImage(
-                  image: AssetImage('assets/images/music.jpg'), // Add your image here
+                  image: AssetImage('assets/images/music.jpg'),
                   fit: BoxFit.cover,
                 ),
               ),

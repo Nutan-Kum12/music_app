@@ -7,7 +7,6 @@ class MixesForYou extends StatelessWidget {
     {'title': 'Mix 2', 'image': 'assets/images/mix2.png'},
     {'title': 'Mix 3', 'image': 'assets/images/mix1.png'},
     {'title': 'Mix 4', 'image': 'assets/images/mix2.png'},
-    // Add more mixes with images as needed
   ];
 
   @override
@@ -31,7 +30,7 @@ class MixesForYou extends StatelessWidget {
           scrollDirection: Axis.horizontal,
           child: Row(
             children: mixesForYouList
-                .map((mix) => _buildMixCard(mix, context)) // Pass context to navigate
+                .map((mix) => _buildMixCard(mix, context)) 
                 .toList(),
           ),
         ),
@@ -44,7 +43,6 @@ class MixesForYou extends StatelessWidget {
       padding: EdgeInsets.only(left: 8.0),
       child: InkWell(
         onTap: () {
-          // Navigate to the relevant screen based on the mix title
           if (mix['title'] == 'Mix 1') {
             Navigator.push(
               context,
@@ -79,7 +77,7 @@ class MixesForYou extends StatelessWidget {
           borderRadius: BorderRadius.circular(8),
           child: Container(
             width: 120,
-            height: 160, // Adjust height to fit image and title
+            height: 160, 
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -97,7 +95,7 @@ class MixesForYou extends StatelessWidget {
                   flex: 1,
                   child: Container(
                     width: double.infinity,
-                    color: Colors.grey[800], // Background color for the title
+                    color: Colors.grey[800], 
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
@@ -119,7 +117,7 @@ class MixesForYou extends StatelessWidget {
   }
 }
 
-// Create different pages for each mix
+
 class Mix1Page extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

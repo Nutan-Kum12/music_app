@@ -1,10 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:music/firebase_options.dart';
-import 'package:music/home.dart';
-import 'package:music/pages/login_page.dart';
-import 'package:music/pages/register_page.dart';
-import 'package:music/pages/signup_page.dart';
 import 'package:music/screens/splash_screen.dart';
 import 'package:music/themes/dark.dart';
 
@@ -27,6 +23,7 @@ class MyApp extends StatelessWidget {
       title: 'Spotify Clone',
       theme: spotifyDarkMode,
       home: SplashScreen(),
+
       // routes: {
       //   "/": (context) => SplashScreen(),      // Splash Screen
       //   "/register": (context) => RegisterPage(),  // Registration Page
@@ -35,6 +32,7 @@ class MyApp extends StatelessWidget {
       //   "/home": (context) => Homepage(),
 
       // },
+
     );
   }
 }

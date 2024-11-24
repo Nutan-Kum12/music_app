@@ -1,8 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:music/auth.dart';
+// import 'package:music/auth.dart';
 import 'package:music/pages/register_page.dart';
-// Import the AuthService class
 
 class DeleteAccountScreen extends StatefulWidget {
   @override
@@ -10,7 +9,7 @@ class DeleteAccountScreen extends StatefulWidget {
 }
 
 class _DeleteAccountScreenState extends State<DeleteAccountScreen> {
-  final AuthService _authService = AuthService(); // Instance of AuthService
+  // final AuthService _authService = AuthService(); 
   final TextEditingController _passwordController = TextEditingController();
 
 Future deleteAccount(BuildContext context) async {
@@ -21,46 +20,26 @@ Future deleteAccount(BuildContext context) async {
     
     if (user != null) {
       await user.delete();
-      // Show success message using SnackBar
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Account deleted successfully.")),
       );
       
-      // Navigate to the Auth page (login/signup)
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>RegisterPage())); // Replace '/auth' with your authentication page route
       
       return true;
     } else {
-      // No user is signed in
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("No user is currently signed in.")),
       );
       return false;
     }
   } catch (e) {
-    // Catch any errors and show them in a SnackBar
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text("Error deleting account: $e")),
     );
     return false;
   }
 }
-  //  Future<bool> deleteAccount() async {
-  //    final FirebaseAuth _auth = FirebaseAuth.instance;
-  //   try {
-  //     User? user = _auth.currentUser;
-  //     if (user != null) {
-  //       await user.delete();
-  //       print("Account deleted successfully.");
-  //       return true;
-  //     }
-  //     print("No user is currently signed in.");
-  //     return false;
-  //   } catch (e) {
-  //     print("Error deleting account: $e");
-  //     return false;
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {

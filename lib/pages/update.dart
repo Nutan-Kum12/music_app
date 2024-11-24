@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:music/auth.dart';
-import 'package:music/pages/register_page.dart'; // Assuming you have an AuthService class and AuthScreen
+import 'package:music/pages/register_page.dart'; 
 
 class UpdatePasswordScreen extends StatefulWidget {
   @override
@@ -8,12 +8,12 @@ class UpdatePasswordScreen extends StatefulWidget {
 }
 
 class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
-  final AuthService _authService = AuthService(); // Instance of AuthService
+  final AuthService _authService = AuthService(); 
   final TextEditingController _oldPasswordController = TextEditingController();
   final TextEditingController _newPasswordController = TextEditingController();
 
-  bool _oldPasswordVisible = false;  // Toggle visibility of the old password
-  bool _newPasswordVisible = false;  // Toggle visibility of the new password
+  bool oldPasswordVisible = false;  
+  bool newPasswordVisible = false; 
 
   void _updatePassword() async {
     String oldPassword = _oldPasswordController.text.trim();
@@ -29,10 +29,9 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
     bool success = await _authService.changePassword(oldPassword, newPassword);
 
     if (success) {
-      // After successful password update, navigate to the Auth screen
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) =>RegisterPage()), // Assuming AuthScreen exists
+        MaterialPageRoute(builder: (context) =>RegisterPage()), 
       );
 
       ScaffoldMessenger.of(context).showSnackBar(
@@ -69,17 +68,17 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
                 labelText: "Old Password",
                 suffixIcon: IconButton(
                   icon: Icon(
-                    _oldPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                    oldPasswordVisible ? Icons.visibility : Icons.visibility_off,
                     color: Colors.grey,
                   ),
                   onPressed: () {
                     setState(() {
-                      _oldPasswordVisible = !_oldPasswordVisible;
+                      oldPasswordVisible = !oldPasswordVisible;
                     });
                   },
                 ),
               ),
-              obscureText: !_oldPasswordVisible,
+              obscureText: !oldPasswordVisible,
             ),
             SizedBox(height: 16),
             // New password field with eye icon
@@ -89,17 +88,17 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
                 labelText: "New Password",
                 suffixIcon: IconButton(
                   icon: Icon(
-                    _newPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                    newPasswordVisible ? Icons.visibility : Icons.visibility_off,
                     color: Colors.grey,
                   ),
                   onPressed: () {
                     setState(() {
-                      _newPasswordVisible = !_newPasswordVisible;
+                      newPasswordVisible = !newPasswordVisible;
                     });
                   },
                 ),
               ),
-              obscureText: !_newPasswordVisible,
+              obscureText: !newPasswordVisible,
             ),
             SizedBox(height: 20),
             ElevatedButton(

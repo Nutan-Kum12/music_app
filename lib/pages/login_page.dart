@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:music/auth.dart'; 
 import 'package:music/pages/forget.dart';
 import 'package:music/themes/navigation.dart';
-import 'home_page.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -13,9 +12,9 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final AuthService _authService = AuthService(); // Create an instance of AuthService
-  String _errorMessage = '';
-  bool _isPasswordVisible = false; // Variable to track password visibility
+  final AuthService _authService = AuthService(); 
+  String errorMessage = '';
+  bool isPasswordVisible = false; 
 
   // Function to handle sign-in
   Future<void> _signIn() async {
@@ -33,7 +32,7 @@ class _LoginPageState extends State<LoginPage> {
     } else {
       // Display error message if sign-in fails
       setState(() {
-        _errorMessage = 'Login failed. Please check your credentials.';
+        errorMessage = 'Login failed. Please check your credentials.';
       });
     }
   }
@@ -63,17 +62,17 @@ class _LoginPageState extends State<LoginPage> {
             SizedBox(height: 16),
             TextField(
               controller: _passwordController,
-              obscureText: !_isPasswordVisible, // Toggle password visibility
+              obscureText: !isPasswordVisible, // Toggle password visibility
               decoration: InputDecoration(
                 labelText: 'Password',
                 border: OutlineInputBorder(),
                 suffixIcon: IconButton(
                   icon: Icon(
-                    _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                    isPasswordVisible ? Icons.visibility : Icons.visibility_off,
                   ),
                   onPressed: () {
                     setState(() {
-                      _isPasswordVisible = !_isPasswordVisible;
+                      isPasswordVisible = !isPasswordVisible;
                     });
                   },
                 ),
@@ -87,11 +86,11 @@ class _LoginPageState extends State<LoginPage> {
                 padding: EdgeInsets.symmetric(vertical: 16),
               ),
             ),
-            if (_errorMessage.isNotEmpty)
+            if (errorMessage.isNotEmpty)
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  _errorMessage,
+                  errorMessage,
                   style: TextStyle(color: Colors.red),
                 ),
               ),
@@ -106,11 +105,13 @@ class _LoginPageState extends State<LoginPage> {
                     MaterialPageRoute(builder: (context) => ForgotPasswordScreen()),
                   );
                 },
-                child: Text("Forgot Password?"),
+                child: Text("Forgot Password?",style: TextStyle(
+                  fontSize: 18
+                ),),
                 style: TextButton.styleFrom(
                   padding: EdgeInsets.zero,
                   tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  textStyle: TextStyle(color: Colors.blue), // Customize the color
+                  textStyle: TextStyle(color: Colors.blue), 
                 ),
               ),
             ),

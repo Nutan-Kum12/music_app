@@ -15,11 +15,11 @@ class _SignUpPageState extends State<SignUpPage> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
-  String _name = '';
-  String _email = '';
-  final AuthService _authService = AuthService(); // Instance of AuthService
-  bool _isPasswordVisible = false; // To toggle password visibility
-  bool _isConfirmPasswordVisible = false; // To toggle confirm password visibility
+  String name = '';
+  String email = '';
+  final AuthService _authService = AuthService(); 
+  bool isPasswordVisible = false; 
+  bool isConfirmPasswordVisible = false; 
 
   // Function to store data in Shared Preferences
   Future<void> _storeUserData(String name, String email) async {
@@ -34,23 +34,19 @@ class _SignUpPageState extends State<SignUpPage> {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
 
-      // Attempt to create the user with the provided email and password
       User? user = await _authService.createUserWithEmailPassword(
-        _email,
+        email,
         _passwordController.text,
       );
 
       if (user != null) {
-        // Store name and email in Shared Preferences
-        await _storeUserData(_name, _email);
 
-        // Navigate to the home page if user creation is successful
+        await _storeUserData(name, email);
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => NavigatorScreen()),
         );
       } else {
-        // Show error message if user creation fails
         _showErrorDialog('Failed to create account. Please try again.');
       }
     }
@@ -115,7 +111,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         }
                         return null;
                       },
-                      onSaved: (value) => _name = value!,
+                      onSaved: (value) => name = value!,
                     ),
                     SizedBox(height: 16),
                     TextFormField(
@@ -132,7 +128,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         }
                         return null;
                       },
-                      onSaved: (value) => _email = value!,
+                      onSaved: (value) => email = value!,
                     ),
                     SizedBox(height: 16),
                     TextFormField(
@@ -142,18 +138,18 @@ class _SignUpPageState extends State<SignUpPage> {
                         border: OutlineInputBorder(),
                         suffixIcon: IconButton(
                           icon: Icon(
-                            _isPasswordVisible
+                            isPasswordVisible
                                 ? Icons.visibility
                                 : Icons.visibility_off,
                           ),
                           onPressed: () {
                             setState(() {
-                              _isPasswordVisible = !_isPasswordVisible;
+                              isPasswordVisible = !isPasswordVisible;
                             });
                           },
                         ),
                       ),
-                      obscureText: !_isPasswordVisible,
+                      obscureText: !isPasswordVisible,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter a password';
@@ -172,19 +168,19 @@ class _SignUpPageState extends State<SignUpPage> {
                         border: OutlineInputBorder(),
                         suffixIcon: IconButton(
                           icon: Icon(
-                            _isConfirmPasswordVisible
+                            isConfirmPasswordVisible
                                 ? Icons.visibility
                                 : Icons.visibility_off,
                           ),
                           onPressed: () {
                             setState(() {
-                              _isConfirmPasswordVisible =
-                                  !_isConfirmPasswordVisible;
+                              isConfirmPasswordVisible =
+                                  !isConfirmPasswordVisible;
                             });
                           },
                         ),
                       ),
-                      obscureText: !_isConfirmPasswordVisible,
+                      obscureText: !isConfirmPasswordVisible,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please confirm your password';
@@ -198,7 +194,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     SizedBox(height: 24),
                     ElevatedButton(
                       child: Text('Sign Up'),
-                      onPressed: _submitForm, // Submit the form and create the user
+                      onPressed: _submitForm, 
                       style: ElevatedButton.styleFrom(
                         padding: EdgeInsets.symmetric(vertical: 16),
                       ),
