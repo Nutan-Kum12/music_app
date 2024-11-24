@@ -14,13 +14,13 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
   late TabController tabController;
   List<int> recentlyPlayedIndices = [];
-  
+
   @override
   void initState() {
     super.initState();
     tabController = TabController(length: 4, vsync: this);
   }
-  
+
 
   @override
   void dispose() {
@@ -38,7 +38,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       body: Column(
         children: [
           buildHeader(screenWidth),
-          Center(child: buildTabBar()), 
+          Center(child: buildTabBar()),
           Expanded(
             child: TabBarView(
               controller: tabController,
@@ -74,12 +74,12 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           ),
           SizedBox(width: 10),
           InkWell(
-            child: CircleAvatar(
-              backgroundImage: AssetImage("assets/images/peace.png"),
-            ),
-            onTap:()
-            {
-               Navigator.push(context,MaterialPageRoute(builder: (context)=>AccountPage()),);
+              child: CircleAvatar(
+                backgroundImage: AssetImage("assets/images/peace.png"),
+              ),
+              onTap:()
+              {
+                Navigator.push(context,MaterialPageRoute(builder: (context)=>AccountPage()),);
               }
           ),
         ],
@@ -98,9 +98,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           indicatorColor: Colors.orange,
           labelColor: Colors.orange,
           unselectedLabelColor: Colors.white,
-          labelStyle: TextStyle(fontSize:22, fontWeight: FontWeight.bold), 
-          unselectedLabelStyle: TextStyle(fontSize:18), 
-          indicatorWeight: 3, 
+          labelStyle: TextStyle(fontSize:22, fontWeight: FontWeight.bold),
+          unselectedLabelStyle: TextStyle(fontSize:18),
+          indicatorWeight: 3,
           tabs:  [
             Tab(text: "For You"),
             Tab(text: "Relax"),
@@ -118,7 +118,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         padding: EdgeInsets.all(8.0),
         child: Column(
           children: [
-           FeaturingToday(),
+            FeaturingToday(),
             MixesForYou(),
             RecentlySection()
           ],
@@ -130,19 +130,19 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   Widget buildRelaxTab() {
     final double screenWidth = MediaQuery.of(context).size.width;
     return Padding(padding: EdgeInsets.all(8),
-    // child: PlaylistScreen(),
+      // child: PlaylistScreen(),
     );
   }
   Widget buildWorkoutTab(){
     final double screenWidth = MediaQuery.of(context).size.width;
     return Padding(padding: EdgeInsets.all(8),
-    // child:Workplaylist(),
+      // child:Workplaylist(),
     );
   }
   Widget buildTravelTab() {
     final double screenWidth = MediaQuery.of(context).size.width;
     return Padding(padding: EdgeInsets.all(8),
-    // child: TravelPlaylist(),
+      // child: TravelPlaylist(),
     );
   }
 }
@@ -341,5 +341,5 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
 //   Widget buildTravelTab() {
 //     return Padding(padding: EdgeInsets.all(8));
-//   }
+//    }
 // }

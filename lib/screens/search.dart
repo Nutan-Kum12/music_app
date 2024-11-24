@@ -1,216 +1,252 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:just_audio/just_audio.dart';
+import 'spotify_service.dart';
 
+void main() {
+  runApp(MyApp());
+}
 
-class SearchPage extends StatelessWidget {
-  final List<Map<String, String>> categories = [
-    {'label': 'TAMIL', 'image': 'assets/images/tamil.png'},
-    {'label': 'INTERNATIONAL', 'image': 'assets/images/international.png'},
-    {'label': 'POP', 'image': 'assets/images/pop.png'},
-    {'label': 'HIP-HOP', 'image': 'assets/images/hip.png'},
-    {'label': 'DANCE', 'image': 'assets/images/dance.png'},
-    {'label': 'COUNTRY', 'image': 'assets/images/country.png'},
-    {'label': 'INDIE', 'image': 'assets/images/indie.png'},
-    {'label': 'JAZZ', 'image': 'assets/images/jazz.png'},
-    {'label': 'DISCO', 'image': 'assets/images/disco.png'},
-    {'label': 'ROCK', 'image': 'assets/images/rock.png'},
-  ];
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: SearchPage(),
+    );
+  }
+}
+
+class SearchPage extends StatefulWidget {
+  @override
+  _SearchPageState createState() => _SearchPageState();
+}
+
+class _SearchPageState extends State<SearchPage> {
+  final SpotifyService _spotifyService = SpotifyService();
+  final TextEditingController _searchController = TextEditingController();
+  final AudioPlayer _audioPlayer = AudioPlayer();
+
+  String? _accessToken;
+  List<Map<String, String>> _categories = [];
+  List<Map<String, String>> _searchResults = [];
+  bool isLoading = false;
+  bool isSearching = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _initialize();
+  }
+
+  @override
+  void dispose() {
+    _audioPlayer.dispose(); // Dispose of audio player to free resources
+    super.dispose();
+  }
+
+  // Initialize: Fetch access token and categories
+  Future<void> _initialize() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    try {
+      final token = await _spotifyService.fetchAccessToken();
+      final categoriesResponse = await _spotifyService.fetchCategories(token);
+
+      // Safely parse categories
+      final categories = (categoriesResponse as List).map((category) {
+        return {
+          'label': category['label']?.toString() ?? 'Unknown Category',
+          'image': category['image']?.toString() ?? '',
+        };
+      }).toList().cast<Map<String, String>>();
+
+      setState(() {
+        _accessToken = token;
+        _categories = categories;
+        isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+      print('Error initializing: $e');
+    }
+  }
+
+  // Perform search
+  Future<void> _performSearch(String query) async {
+    if (_accessToken == null || query.isEmpty) return;
+
+    setState(() {
+      isLoading = true;
+      isSearching = true;
+    });
+
+    try {
+      final searchResponse = await _spotifyService.searchTracks(query, _accessToken!);
+
+      // Safely parse search results
+      final results = (searchResponse as List).map((track) {
+        return {
+          'name': track['name']?.toString() ?? 'Unknown Track',
+          'artist': track['artist']?.toString() ?? 'Unknown Artist',
+          'image': track['image']?.toString() ?? '',
+          'preview_url': track['preview_url']?.toString() ?? '',
+        };
+      }).toList().cast<Map<String, String>>();
+
+      setState(() {
+        _searchResults = results;
+        isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+      print('Error performing search: $e');
+    }
+  }
+
+  // Clear search results
+  void _clearSearch() {
+    setState(() {
+      _searchResults = [];
+      isSearching = false;
+      _searchController.clear();
+    });
+  }
+
+  // Play preview using just_audio
+  Future<void> _playPreview(String previewUrl) async {
+    if (previewUrl.isEmpty) {
+      print('No preview URL available');
+      return;
+    }
+
+    try {
+      await _audioPlayer.setUrl(previewUrl);
+      _audioPlayer.play();
+    } catch (e) {
+      print('Error playing preview: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    final double screenHeight = MediaQuery.of(context).size.height;
-
     return Scaffold(
-      
       appBar: AppBar(
-        // backgroundColor: Colors.black,
-        // elevation: 0,
-        
-        elevation: 0,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-         
-          iconSize: 28, // Change the color of the back button here
-          onPressed: () {
-            Navigator.pop(context); // This will take you back to the previous page
-          },
+        title: TextField(
+          controller: _searchController,
+          decoration: InputDecoration(
+            hintText: 'Search for tracks...',
+            hintStyle: TextStyle(color: Colors.grey[400]),
+            prefixIcon: Icon(Icons.search, color: Colors.grey[400]),
+            suffixIcon: isSearching
+                ? IconButton(
+              icon: Icon(Icons.clear, color: Colors.grey[400]),
+              onPressed: _clearSearch,
+            )
+                : null,
+            filled: true,
+            fillColor: Colors.grey[800],
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(20.0),
+              borderSide: BorderSide.none,
+            ),
+          ),
+          onSubmitted: _performSearch,
         ),
-        actions: [
+        backgroundColor: Colors.black,
+      ),
+      body: isLoading
+          ? Center(child: CircularProgressIndicator())
+          : isSearching
+          ? _buildSearchResults()
+          : _buildCategories(),
+      backgroundColor: Colors.black,
+    );
+  }
+
+  // Build categories grid
+  Widget _buildCategories() {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
           Padding(
-            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-            child: GestureDetector(
-              onTap: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(builder: (context) => Searchclick()),
-                // );
-              },
-              child: Center(
-                child: Container(
-                  height: 40, // Adjust the height of the search bar container
-                  width: MediaQuery.of(context).size.width * 0.85, // Adjust width accordingly
-                  decoration: BoxDecoration(
-                    color: Colors.grey[800],
-                    borderRadius: BorderRadius.circular(18),
-                  ),
-                  child: TextField(
-                    // readOnly: true, // Make it clickable but non-editable
-                    decoration: InputDecoration(
-                      hintText: "Artists, Songs, or Podcasts",
-                      hintStyle: TextStyle(color: Colors.grey[400]),
-                      prefixIcon: Icon(
-                        Icons.search,
-                        color: Colors.grey[400],
-                        size: 24, // Adjust the icon size
-                      ),
-                      filled: true,
-                      fillColor: Colors.grey[800],
-                      contentPadding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(18.0),
-                        borderSide: BorderSide.none,
-                      ),
-                    ),
-                    onTap: () {
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(builder: (context) => Searchclick()),
-                      // );
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: Text(
+              'Categories',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 30,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          Expanded(
+            child: GridView.builder(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 10,
+                mainAxisSpacing: 10,
+                childAspectRatio: 1.8,
+              ),
+              itemCount: _categories.length,
+              itemBuilder: (context, index) {
+                final category = _categories[index];
+                return GestureDetector(
+                  onTap: () {
+                    // Implement category-specific functionality here
+                  },
+                  child: Image.network(
+                    category['image']!,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Image.asset(
+                        'assets/images/placeholder.png',
+                        fit: BoxFit.cover,
+                      );
                     },
                   ),
-                ),
-              ),
+                );
+              },
             ),
           ),
         ],
       ),
-      body: Padding(
-        padding:  EdgeInsets.only(left: 8.0,right: 8),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Category title
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10),
-              child: Text(
-                'Categories',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 30,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            // Grid of categories
-            Expanded(
-              child: GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 10,
-                  mainAxisSpacing: 10,
-                  childAspectRatio: 1.8, // Adjust to match the image's aspect ratio
-                ),
-                itemCount: categories.length,
-                itemBuilder: (context, index) {
-                  final category = categories[index];
-                  return GestureDetector(
-                    onTap: () {
-                      // Navigate to a different page for each category
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => CategoryPage(
-                            categoryName: category['label']!,
-                            categoryImage: category['image']!,
-                          ),
-                        ),
-                      );
-                    },
-                    child: Container(
-                      height: screenHeight * 0.15,
-                      child: Stack(
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: Image.asset(
-                              category['image']!,
-                              fit: BoxFit.cover,
-                              width: double.infinity,
-                              height: double.infinity,
-                            ),
-                          ),
-                          Container(
-                            decoration: BoxDecoration(
-                              color: Colors.black.withOpacity(0.4),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                          Center(
-                            child: Text(
-                              category['label']!,
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                shadows: [
-                                  Shadow(
-                                    offset: Offset(1, 1),
-                                    blurRadius: 2,
-                                    color: Colors.black,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
-          ],
-        ),
-      ),
+    );
+  }
+
+  // Build search results list with playback
+  Widget _buildSearchResults() {
+    return ListView.builder(
+      itemCount: _searchResults.length,
+      itemBuilder: (context, index) {
+        final track = _searchResults[index];
+        return ListTile(
+          leading: Image.network(
+            track['image']!,
+            errorBuilder: (context, error, stackTrace) {
+              return Icon(
+                Icons.music_note,
+                size: 50,
+                color: Colors.grey,
+              );
+            },
+          ),
+          title: Text(track['name']!, style: TextStyle(color: Colors.white)),
+          subtitle: Text(track['artist']!, style: TextStyle(color: Colors.grey)),
+          trailing: IconButton(
+            icon: Icon(Icons.play_arrow, color: Colors.green),
+            onPressed: () => _playPreview(track['preview_url']!),
+          ),
+        );
+      },
     );
   }
 }
-
-class CategoryPage extends StatelessWidget {
-  final String categoryName;
-  final String categoryImage;
-
-  CategoryPage({required this.categoryName, required this.categoryImage});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor:  Color.fromARGB(255, 198, 192, 192),
-        title: Text(
-          '$categoryName PAGE',
-          style: TextStyle(color: const Color.fromARGB(255, 7, 4, 4)),
-        ),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset(
-              categoryImage,
-              height: 200, // Adjust size as needed
-              width: 200,
-            ),
-            SizedBox(height: 20),
-            Text(
-              'Welcome to the $categoryName Page!',
-              style: TextStyle(fontSize: 24, color: Colors.white),
-            ),
-            // You can add more content specific to the category here.
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-
