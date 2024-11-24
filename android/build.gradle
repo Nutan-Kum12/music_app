@@ -1,3 +1,25 @@
+// allprojects {
+//     repositories {
+//         google()
+//         mavenCentral()
+//     }
+//     dependencies {
+//     classpath 'com.android.tools.build:gradle:8.0.0' // or higher, depending on your Gradle version
+// }
+// }
+
+// rootProject.buildDir = "../build"
+// subprojects {
+//     project.buildDir = "${rootProject.buildDir}/${project.name}"
+// }
+// subprojects {
+//     project.evaluationDependsOn(":app")
+// }
+
+// tasks.register("clean", Delete) {
+//     delete rootProject.buildDir
+// }
+
 allprojects {
     repositories {
         google()
@@ -15,7 +37,4 @@ subprojects {
 
 tasks.register("clean", Delete) {
     delete rootProject.buildDir
-}
-dependencies {
-    classpath 'com.android.tools.build:gradle:8.0.0' // or higher, depending on your Gradle version
 }

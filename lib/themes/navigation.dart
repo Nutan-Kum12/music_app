@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:music/pages/example.dart';
 import 'package:music/pages/home_page.dart';
+import 'package:music/pages/main.dart';
 import 'package:music/pages/playlist.dart';
 import 'package:music/screens/search.dart';
 import 'package:music/screens/song.dart';
@@ -15,7 +17,7 @@ class _NavigatorScreenState extends State<NavigatorScreen> {
   // List of screens to navigate between
   final List<Widget> _screens = [
     HomeScreen(),
-    SearchPage(),
+    SongSearchScreen(),
     MusicPlayerScreen() // Assuming you want a PlaylistScreen for Library
   ];
 

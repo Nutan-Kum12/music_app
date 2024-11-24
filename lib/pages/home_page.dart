@@ -2,6 +2,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:music/pages/account.dart';
+import 'package:music/pages/main.dart';
 import 'package:music/pages/mix.dart';
 import 'package:music/pages/recent.dart';
 import 'package:music/pages/today.dart';
@@ -135,9 +136,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   }
   Widget buildWorkoutTab(){
     final double screenWidth = MediaQuery.of(context).size.width;
-    return Padding(padding: EdgeInsets.all(8),
+    return SongSearchScreen();
       // child:Workplaylist(),
-    );
+    
   }
   Widget buildTravelTab() {
     final double screenWidth = MediaQuery.of(context).size.width;

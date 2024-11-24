@@ -41,6 +41,7 @@ dependencies:
   firebase_auth: ^5.3.3
   shared_preferences: ^2.3.3
   google_fonts: ^6.2.1
+  audioplayers: ^6.1.0
 
 dev_dependencies:
   flutter_test:

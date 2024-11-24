@@ -3,20 +3,17 @@ import 'package:http/http.dart' as http; // For API requests
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart'; // For playing audio
 
-void main() {
-  runApp(const SpotifyApp());
-}
 
-class SpotifyApp extends StatelessWidget {
-  const SpotifyApp({Key? key}) : super(key: key);
+// class SpotifyApp extends StatelessWidget {
+//   const SpotifyApp({Key? key}) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: SongSearchScreen(),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       home: SongSearchScreen(),
+//     );
+//   }
+// }
 
 class SongSearchScreen extends StatefulWidget {
   @override
@@ -91,7 +88,7 @@ class _SongSearchScreenState extends State<SongSearchScreen> {
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding:  EdgeInsets.all(8.0),
             child: TextField(
               controller: _searchController,
               decoration: const InputDecoration(
