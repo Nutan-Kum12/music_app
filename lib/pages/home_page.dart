@@ -6,6 +6,8 @@ import 'package:music/pages/recent.dart';
 import 'package:music/pages/today.dart';
 import 'package:music/screens/search.dart';
 import 'package:music/screens/song.dart';
+import 'package:music/screens/tab.dart';
+import 'package:music/services/appwritesongs.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -19,7 +21,7 @@ class _HomePageState extends State<HomePage> {
   final List<Widget> _bottomNavScreens = [
     HomeTab(), // The main tab with the original HomeScreen content
     SearchPage(), // Search screen
-    MusicPlayerScreen(), // Library/Playlist screen
+    MusicPlayerScreenn(), // Library/Playlist screen
   ];
 
   @override
@@ -170,6 +172,7 @@ class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
             FeaturingToday(),
             MixesForYou(),
             RecentlySection(),
+            MixesForYou()
           ],
         ),
       ),
@@ -177,23 +180,20 @@ class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
   }
 
   Widget buildRelaxTab() {
-    return Padding(
-      padding: EdgeInsets.all(8),
-      // child: SongsPage(),
-    );
+    return TabPage();
   }
 
   Widget buildWorkoutTab() {
     return Padding(
       padding: EdgeInsets.all(8),
-      // child: SongsPage(),
+      child: TabPage(),
     );
   }
 
   Widget buildTravelTab() {
     return Padding(
       padding: EdgeInsets.all(8),
-      // child: SongsPage(),
+      child: TabPage(),
     );
   }
 }

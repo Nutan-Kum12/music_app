@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:music/screens/tab.dart';
 
 // FeaturingToday Widget
 class FeaturingToday extends StatelessWidget {
@@ -50,35 +51,35 @@ class FeaturingToday extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => EnglishSongsPage(),
+                builder: (context) => Padding(padding: EdgeInsets.only(top: 60) ,child: TabPage()),
               ),
             );
           } else if (item['title'] == 'Top Hits') {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => TopHitsPage(),
+                builder: (context) => Padding(padding: EdgeInsets.only(top: 60) ,child: TabPage()),
               ),
             );
           } else if (item['title'] == 'Jazz Classics') {
             Navigator.push(
               context,
-              MaterialPageRoute(
-                builder: (context) => JazzClassicsPage(),
+               MaterialPageRoute(
+                builder: (context) => Padding(padding: EdgeInsets.only(top: 60) ,child: TabPage()),
               ),
             );
           } else if (item['title'] == 'Chill Vibes') {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => ChillVibesPage(),
+                builder: (context) => Padding(padding: EdgeInsets.only(top: 60) ,child: TabPage()),
               ),
             );
           } else if (item['title'] == 'Workout Beats') {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => WorkoutBeatsPage(),
+                builder: (context) => Padding(padding: EdgeInsets.only(top: 60) ,child: TabPage()),
               ),
             );
           }

@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:music/screens/tab.dart';
 
 // MixesForYou Widget
 class MixesForYou extends StatelessWidget {
   final List<Map<String, String>> mixesForYouList = [
-    {'title': 'Mix 1', 'image': 'assets/images/mix1.png'},
+    {'title': 'Mix 1', 'image': 'assets/images/mix2.png'},
     {'title': 'Mix 2', 'image': 'assets/images/mix2.png'},
-    {'title': 'Mix 3', 'image': 'assets/images/mix1.png'},
+    {'title': 'Mix 3', 'image': 'assets/images/mix2.png'},
     {'title': 'Mix 4', 'image': 'assets/images/mix2.png'},
+    {'title': 'Mix 5', 'image': 'assets/images/mix2.png'},
+    {'title': 'Mix 6', 'image': 'assets/images/mix2.png'},
   ];
 
   @override
@@ -47,28 +50,28 @@ class MixesForYou extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => Mix1Page(),
+                builder: (context) => TabPage(),
               ),
             );
           } else if (mix['title'] == 'Mix 2') {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => Mix2Page(),
+                builder: (context) => Padding(padding: EdgeInsets.only(top: 60) ,child: TabPage()),
               ),
             );
           } else if (mix['title'] == 'Mix 3') {
             Navigator.push(
               context,
-              MaterialPageRoute(
-                builder: (context) => Mix3Page(),
+               MaterialPageRoute(
+                builder: (context) => Padding(padding: EdgeInsets.only(top: 60) ,child: TabPage()),
               ),
             );
           } else if (mix['title'] == 'Mix 4') {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => Mix4Page(),
+                builder: (context) => Padding(padding: EdgeInsets.only(top: 60) ,child: TabPage()),
               ),
             );
           }

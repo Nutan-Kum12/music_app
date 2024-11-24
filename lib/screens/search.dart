@@ -4,19 +4,9 @@ import 'package:http/http.dart' as http;
 import 'package:just_audio/just_audio.dart';
 import 'spotify_service.dart';
 
-void main() {
-  runApp(MyApp());
-}
 
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: SearchPage(),
-    );
-  }
-}
+
+
 
 class SearchPage extends StatefulWidget {
   @override
@@ -138,7 +128,7 @@ class _SearchPageState extends State<SearchPage> {
     return Scaffold(
       appBar: AppBar(
         title: TextField(
-          readOnly: true, // making search bar editable
+          // readOnly: true, // making search bar editable
           controller: _searchController,
           decoration: InputDecoration(
             hintText: 'Search for tracks...',
@@ -227,12 +217,46 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   // Build search results list with playback
-  Widget _buildSearchResults() {
-    return ListView.builder(
-      itemCount: _searchResults.length,
-      itemBuilder: (context, index) {
-        final track = _searchResults[index];
-        return ListTile(
+//   Widget _buildSearchResults() {
+//     return ListView.builder(
+//       itemCount: _searchResults.length,
+//       itemBuilder: (context, index) {
+//         final track = _searchResults[index];
+//         return Card(
+//           child: ListTile(
+//             leading: Image.network(
+//               track['image']!,
+//               errorBuilder: (context, error, stackTrace) {
+//                 return Icon(
+//                   Icons.music_note,
+//                   size: 50,
+//                   color: Colors.grey,
+//                 );
+//               },
+//             ),
+//             title: Text(track['name']!, style: TextStyle(color: Colors.white)),
+//             subtitle: Text(track['artist']!, style: TextStyle(color: Colors.grey)),
+//             trailing: IconButton(
+//               icon: Icon(Icons.play_arrow, color: Colors.green),
+//               onPressed: () => _playPreview(track['preview_url']!),
+//             ),
+//           ),
+//         );
+//       },
+//     );
+//   }
+// }
+   
+
+
+
+Widget _buildSearchResults() {
+  return ListView.builder(
+    itemCount: _searchResults.length,
+    itemBuilder: (context, index) {
+      final track = _searchResults[index];
+      return Card(
+        child: ListTile(
           leading: Image.network(
             track['image']!,
             errorBuilder: (context, error, stackTrace) {
@@ -247,10 +271,257 @@ class _SearchPageState extends State<SearchPage> {
           subtitle: Text(track['artist']!, style: TextStyle(color: Colors.grey)),
           trailing: IconButton(
             icon: Icon(Icons.play_arrow, color: Colors.green),
-            onPressed: () => _playPreview(track['preview_url']!),
+            onPressed: () {
+              // Navigate to the MusicPlayerScreen with the current track
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => MusicPlayerScreen(
+                    tracks: _searchResults,
+                    initialTrackIndex: index,
+                  ),
+                ),
+              );
+            },
           ),
-        );
-      },
+        ),
+      );
+    },
+  );
+}  
+}
+
+
+
+
+
+
+class MusicPlayerScreen extends StatefulWidget {
+  final List<Map<String, String>> tracks;
+  final int initialTrackIndex;
+
+  MusicPlayerScreen({required this.tracks, required this.initialTrackIndex});
+
+  @override
+  _MusicPlayerScreenState createState() => _MusicPlayerScreenState();
+}
+
+class _MusicPlayerScreenState extends State<MusicPlayerScreen> {
+  late AudioPlayer _audioPlayer;
+  late int _currentTrackIndex;
+  bool _isPlaying = false;
+  Duration _currentPosition = Duration.zero;
+  Duration _totalDuration = Duration.zero;
+
+  @override
+  void initState() {
+    super.initState();
+    _audioPlayer = AudioPlayer();
+    _playTrack();
+    _currentTrackIndex = widget.initialTrackIndex;
+    _initializePlayer();
+  }
+
+  void _initializePlayer() {
+    final track = widget.tracks[_currentTrackIndex];
+    final previewUrl = track['preview_url'] ?? '';
+
+    if (previewUrl.isEmpty) {
+      print('No preview URL available');
+      return;
+    }
+
+    _audioPlayer.setUrl(previewUrl);
+
+    // Listen for changes in duration
+    _audioPlayer.durationStream.listen((duration) {
+      setState(() {
+        _totalDuration = duration ?? Duration.zero;
+      });
+    });
+
+    // Listen for changes in position
+    _audioPlayer.positionStream.listen((position) {
+      setState(() {
+        _currentPosition = position;
+      });
+    });
+
+
+    _audioPlayer.playerStateStream.listen((state) {
+      setState(() {
+        _isPlaying = state.processingState == ProcessingState.ready &&
+            state.playing;
+      });
+    });
+
+     _audioPlayer.playerStateStream.listen((state) {
+      if (state.processingState == ProcessingState.completed) {
+        _nextTrack(); 
+      }
+    });
+  }
+
+  void _playTrack() async {
+    await _audioPlayer.play();
+    setState(() {
+      _isPlaying = true;
+    });
+  }
+
+  void _pauseTrack() async {
+    await _audioPlayer.pause();
+    setState(() {
+      _isPlaying = false;
+    });
+  }
+
+  void _nextTrack() {
+    if (_currentTrackIndex < widget.tracks.length - 1) {
+      setState(() {
+        _currentTrackIndex++;
+      });
+      _initializePlayer();
+      _playTrack();
+    }
+  }
+
+  void _previousTrack() {
+    if (_currentTrackIndex > 0) {
+      setState(() {
+        _currentTrackIndex--;
+      });
+      _initializePlayer();
+      _playTrack();
+    }
+  }
+
+  void _seekToPosition(double value) {
+    final position = Duration(seconds: value.toInt());
+    _audioPlayer.seek(position);
+  }
+
+  @override
+  void dispose() {
+    
+    _audioPlayer.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final screenHeight=MediaQuery.of(context).size.height;
+    final screenWidth=MediaQuery.of(context).size.width;
+    final track = widget.tracks[_currentTrackIndex];
+    return Scaffold( 
+      body: Padding(
+        padding: EdgeInsets.only(bottom: 60,left: 16,right: 16),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: 
+              [
+                IconButton(onPressed: ()
+                {
+                  Navigator.pop(context);
+                },
+                 icon: Icon(Icons.keyboard_arrow_down_sharp,size: 34,)
+                 ),
+                 SizedBox(width: screenWidth*0.5),
+                IconButton(onPressed: ()
+                {
+                  Navigator.pop(context);
+                },
+                 icon: Icon(Icons.close_rounded)
+                 )
+              ],
+            ),
+            SizedBox(height: 40),
+             Text(
+              track['name']!,
+              style: TextStyle(color: Colors.white, fontSize: 24),
+            ),
+            Padding(
+              padding: EdgeInsets.all(35),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(32),
+                child: Image.network(
+                  track['image']!,
+                  height: screenHeight*0.3,
+                  // width: screenWidth*.5,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Icon(
+                      Icons.music_note,
+                      size: 100,
+                      color: Colors.grey,
+                    );
+                  },
+                ),
+              ),
+            ),
+            Text(
+              track['name']!,
+              style: TextStyle(color: Colors.white, fontSize: 24),
+            ),
+            Text(
+              track['artist']!,
+              style: TextStyle(color: Colors.grey, fontSize: 18),
+            ),
+            SizedBox(height: 20),
+           
+            SizedBox(height: 20),
+            // Slider for track progress
+            Slider(
+              value: _currentPosition.inSeconds.toDouble(),
+              min: 0,
+              max: _totalDuration.inSeconds.toDouble(),
+              onChanged: (value) {
+                _seekToPosition(value);
+              },
+              activeColor: Colors.green,
+              inactiveColor: Colors.grey,
+            ),
+            SizedBox(height: 20),
+            Text(
+              '${_currentPosition.inMinutes}:${_currentPosition.inSeconds % 60}'.padLeft(5, '0') +
+                  ' / ' +
+                  '${_totalDuration.inMinutes}:${_totalDuration.inSeconds % 60}'.padLeft(5, '0'),
+              style: TextStyle(color: Colors.white),
+            ),
+            SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+              IconButton(
+                  icon: Icon(Icons.skip_previous, color: Colors.white,size: 35,),
+                  onPressed: _previousTrack,
+                ),
+                 SizedBox(width: 20),
+               CircleAvatar(
+                radius: 30,
+                backgroundColor: Colors.green,
+                child: IconButton(
+                icon: Icon(
+                  _isPlaying ? Icons.pause : Icons.play_arrow,
+                  // color: Colors.green,
+                  size: 25,
+                  
+                ),
+                onPressed: _isPlaying ? _pauseTrack : _playTrack,
+                          ),
+              ),
+               SizedBox(width: 20),
+                IconButton(
+                  icon: Icon(Icons.skip_next, color: Colors.white,size: 34,),
+                  onPressed: _nextTrack,
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

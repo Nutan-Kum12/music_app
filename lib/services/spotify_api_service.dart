@@ -100,7 +100,7 @@ void _playPreview(String? previewUrl) {
                   title: Text(song['name']),
                   subtitle: Text(song['artists'][0]['name']),
                   trailing: IconButton(
-                    icon: const Icon(Icons.play_arrow),
+                    icon:  Icon(Icons.play_arrow),
                     onPressed: () => _playPreview(song['preview_url']),
                   ),
                 );
@@ -118,3 +118,70 @@ void _playPreview(String? previewUrl) {
     super.dispose();
   }
 }
+
+
+
+// For playing audio
+
+// class MusicPlayerScreen extends StatefulWidget {
+//   final Map<String, dynamic> track;
+
+//   MusicPlayerScreen({required this.track});
+
+//   @override
+//   _MusicPlayerScreenState createState() => _MusicPlayerScreenState();
+// }
+
+// class _MusicPlayerScreenState extends State<MusicPlayerScreen> {
+//   final AudioPlayer _audioPlayer = AudioPlayer();
+//   bool _isPlaying = false;
+
+//   void _playPause() async {
+//     if (_isPlaying) {
+//       await _audioPlayer.pause();
+//     } else {
+//       await _audioPlayer.play(UrlSource(widget.track['preview_url']));
+//     }
+//     setState(() {
+//       _isPlaying = !_isPlaying;
+//     });
+//   }
+
+//   @override
+//   void dispose() {
+//     _audioPlayer.dispose();
+//     super.dispose();
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(title: Text('Now Playing')),
+//       body: Padding(
+//         padding: const EdgeInsets.all(8.0),
+//         child: Column(
+//           children: [
+//             Image.network(widget.track['image'], height: 200, width: 200),
+//             SizedBox(height: 20),
+//             Text(
+//               widget.track['name'],
+//               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+//             ),
+//             Text(
+//               widget.track['artist'],
+//               style: TextStyle(fontSize: 18, fontStyle: FontStyle.italic),
+//             ),
+//             SizedBox(height: 20),
+//             IconButton(
+//               icon: Icon(_isPlaying ? Icons.pause : Icons.play_arrow),
+//               onPressed: _playPause,
+//               iconSize: 50,
+//             ),
+//             SizedBox(height: 20),
+//             // Optionally, you can add next and previous buttons here
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }

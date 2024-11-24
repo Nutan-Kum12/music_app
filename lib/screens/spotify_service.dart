@@ -24,7 +24,7 @@ class SpotifyService {
     }
   }
 
-  Future<List<Map<String, String>>> fetchCategories(String accessToken) async {
+  Future<List<Map<String, dynamic>>> fetchCategories(String accessToken) async {
     final response = await http.get(
       Uri.parse('https://api.spotify.com/v1/browse/categories?limit=10'),
       headers: {'Authorization': 'Bearer $accessToken'},
@@ -44,7 +44,7 @@ class SpotifyService {
     }
   }
 
-  Future<List<Map<String, String>>> searchTracks(String query, String accessToken) async {
+  Future<List<Map<String, dynamic>>> searchTracks(String query, String accessToken) async {
     final response = await http.get(
       Uri.parse('https://api.spotify.com/v1/search?q=$query&type=track&limit=10'),
       headers: {'Authorization': 'Bearer $accessToken'},
@@ -64,7 +64,7 @@ class SpotifyService {
         'preview_url': item['preview_url'] ?? '',
       })
           .toList()
-          .cast<Map<String, String>>(); // Explicitly cast the list to List<Map<String, String>>
+          .cast<Map<String, dynamic>>(); // Explicitly cast the list to List<Map<String, String>>
       return tracks;
     } else {
       throw Exception('Failed to search tracks');
@@ -72,3 +72,4 @@ class SpotifyService {
   }
 
 }
+
