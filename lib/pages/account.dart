@@ -32,6 +32,8 @@ class _AccountPageState extends State<AccountPage> {
 
   @override
   Widget build(BuildContext context) {
+    final screenHeight=MediaQuery.of(context).size.height;
+    final screenWidth=MediaQuery.of(context).size.width;
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: spotifyDarkMode,

@@ -48,7 +48,7 @@ Future deleteAccount(BuildContext context) async {
         title: Text("Delete Account"),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding:  EdgeInsets.all(16.0),
         child: Column(
           children: [
             TextField(

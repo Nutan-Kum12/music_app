@@ -104,7 +104,7 @@ class FeaturingToday extends StatelessWidget {
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
-                    fontSize: 30,
+                    fontSize: screenHeight*0.02,
                     shadows: [
                       Shadow(
                         offset: Offset(0, 1),

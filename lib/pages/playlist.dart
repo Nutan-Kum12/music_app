@@ -79,10 +79,12 @@ class _MusicPlayerScreenState extends State<MusicPlayerScreenn> {
 
   @override
   Widget build(BuildContext context) {
+      final screenHeight=MediaQuery.of(context).size.height;
+    final screenWidth=MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Music Player',style: TextStyle(
-          fontSize: 22
+        title:  Text('Music Player',style: TextStyle(
+          fontSize: screenWidth*0.06
         ),),
         actions: [
           IconButton(

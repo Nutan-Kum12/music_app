@@ -226,132 +226,136 @@ void dispose() {
 
   @override
   Widget build(BuildContext context) {
+      final screenHeight=MediaQuery.of(context).size.height;
+    final screenWidth=MediaQuery.of(context).size.width;
     final currentSong =widget.songs[currentIndex];
     return Scaffold(
       backgroundColor: const Color(0xFF1E1E1E), 
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox(height: 50), 
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Icon(Icons.arrow_back, color: Colors.white),
-                Text(
-                  'Singing Now',
-                  style: GoogleFonts.lato(
-                    textStyle: const TextStyle(
-                      fontSize: 16,
-                      color: Colors.white,
+        padding:  EdgeInsets.all(16.0),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(height: 50), 
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Icon(Icons.arrow_back, color: Colors.white),
+                  Text(
+                    'Singing Now',
+                    style: GoogleFonts.lato(
+                      textStyle: const TextStyle(
+                        fontSize: 16,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
-                ),
-               IconButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                icon: Icon(Icons.close),
-               ),
-              ],
-            ),
-            const SizedBox(height: 20),
-            // Image or Album Art
-            Container(
-              height: 300,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                image: const DecorationImage(
-                  image: AssetImage('assets/images/music.jpg'), // Add your image here
-                  fit: BoxFit.cover,
+                 IconButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: Icon(Icons.close),
+                 ),
+                ],
+              ),
+              const SizedBox(height: 20),
+              // Image or Album Art
+              Container(
+                height: screenHeight*0.38,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  image: const DecorationImage(
+                    image: AssetImage('assets/images/music.jpg'), // Add your image here
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(height: 20),
-            // Song Title and Artist
-            Column(
-              children: [
-                Text(
-                  currentSong['name'],
-                  style: GoogleFonts.lato(
-                    textStyle: const TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  currentSong['name'],
-                  style: GoogleFonts.lato(
-                    textStyle: const TextStyle(
-                      fontSize: 16,
-                      color: Colors.grey,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 30),
-            // Progress Bar with Usi Slider
-            Column(
-              children: [
-                Slider(
-                  value: _currentPosition.inSeconds.toDouble(),
-                  min: 0,
-                  max: _totalDuration.inSeconds.toDouble(),
-                  activeColor: Colors.green,
-                  inactiveColor: Colors.grey,
-                  onChanged: seekToPosition,
-                ),
-                Padding(
-                  padding:  EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        formatDuration(_currentPosition),
-                        style:  TextStyle(color: Colors.grey),
+              const SizedBox(height: 20),
+              // Song Title and Artist
+              Column(
+                children: [
+                  Text(
+                    currentSong['name'],
+                    style: GoogleFonts.lato(
+                      textStyle: const TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
                       ),
-                      Text(
-                        formatDuration(_totalDuration),
-                        style: const TextStyle(color: Colors.grey),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 20),
-            // Playback controls
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                IconButton(
-                  icon: Icon(Icons.skip_previous, size: 36),
-                  onPressed: previousSong,
-                ),
-                CircleAvatar(
-                  radius: 30,
-                  backgroundColor: Colors.green,
-                  child: IconButton(
-                    icon: Icon(
-                      isPlaying ? Icons.pause : Icons.play_arrow,
-                      size: 30,
                     ),
-                    onPressed: togglePlayPause,
                   ),
-                ),
-                IconButton(
-                  icon: Icon(Icons.skip_next, size: 36),
-                  onPressed: nextSong,
-                ),
-              ],
-            ),
-          ],
+                  SizedBox(height: 8),
+                  Text(
+                    currentSong['name'],
+                    style: GoogleFonts.lato(
+                      textStyle: const TextStyle(
+                        fontSize: 16,
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+               SizedBox(height: 30),
+              // Progress Bar with Usi Slider
+              Column(
+                children: [
+                  Slider(
+                    value: _currentPosition.inSeconds.toDouble(),
+                    min: 0,
+                    max: _totalDuration.inSeconds.toDouble(),
+                    activeColor: Colors.green,
+                    inactiveColor: Colors.grey,
+                    onChanged: seekToPosition,
+                  ),
+                  Padding(
+                    padding:  EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          formatDuration(_currentPosition),
+                          style:  TextStyle(color: Colors.grey),
+                        ),
+                        Text(
+                          formatDuration(_totalDuration),
+                          style: const TextStyle(color: Colors.grey),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 20),
+              // Playback controls
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  IconButton(
+                    icon: Icon(Icons.skip_previous, size: 36),
+                    onPressed: previousSong,
+                  ),
+                  CircleAvatar(
+                    radius: 30,
+                    backgroundColor: Colors.green,
+                    child: IconButton(
+                      icon: Icon(
+                        isPlaying ? Icons.pause : Icons.play_arrow,
+                        size: 30,
+                      ),
+                      onPressed: togglePlayPause,
+                    ),
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.skip_next, size: 36),
+                    onPressed: nextSong,
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -171,12 +171,12 @@ class _SearchPageState extends State<SearchPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10),
+            padding:  EdgeInsets.symmetric(vertical: 10),
             child: Text(
               'Categories',
               style: TextStyle(
                 color: Colors.white,
-                fontSize: 30,
+                fontSize: screenWidth*0.03,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -216,40 +216,7 @@ class _SearchPageState extends State<SearchPage> {
     );
   }
 
-  // Build search results list with playback
-//   Widget _buildSearchResults() {
-//     return ListView.builder(
-//       itemCount: _searchResults.length,
-//       itemBuilder: (context, index) {
-//         final track = _searchResults[index];
-//         return Card(
-//           child: ListTile(
-//             leading: Image.network(
-//               track['image']!,
-//               errorBuilder: (context, error, stackTrace) {
-//                 return Icon(
-//                   Icons.music_note,
-//                   size: 50,
-//                   color: Colors.grey,
-//                 );
-//               },
-//             ),
-//             title: Text(track['name']!, style: TextStyle(color: Colors.white)),
-//             subtitle: Text(track['artist']!, style: TextStyle(color: Colors.grey)),
-//             trailing: IconButton(
-//               icon: Icon(Icons.play_arrow, color: Colors.green),
-//               onPressed: () => _playPreview(track['preview_url']!),
-//             ),
-//           ),
-//         );
-//       },
-//     );
-//   }
-// }
    
-
-
-
 Widget _buildSearchResults() {
   return ListView.builder(
     itemCount: _searchResults.length,
@@ -415,111 +382,115 @@ class _MusicPlayerScreenState extends State<MusicPlayerScreen> {
     final track = widget.tracks[_currentTrackIndex];
     return Scaffold( 
       body: Padding(
-        padding: EdgeInsets.only(bottom: 60,left: 16,right: 16),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: 
-              [
-                IconButton(onPressed: ()
-                {
-                  Navigator.pop(context);
-                },
-                 icon: Icon(Icons.keyboard_arrow_down_sharp,size: 34,)
-                 ),
-                 SizedBox(width: screenWidth*0.5),
-                IconButton(onPressed: ()
-                {
-                  Navigator.pop(context);
-                },
-                 icon: Icon(Icons.close_rounded)
-                 )
-              ],
-            ),
-            SizedBox(height: 40),
-             Text(
-              track['name']!,
-              style: TextStyle(color: Colors.white, fontSize: 24),
-            ),
-            Padding(
-              padding: EdgeInsets.all(35),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(32),
-                child: Image.network(
-                  track['image']!,
-                  height: screenHeight*0.3,
-                  // width: screenWidth*.5,
-                  errorBuilder: (context, error, stackTrace) {
-                    return Icon(
-                      Icons.music_note,
-                      size: 100,
-                      color: Colors.grey,
-                    );
-                  },
-                ),
-              ),
-            ),
-            Text(
-              track['name']!,
-              style: TextStyle(color: Colors.white, fontSize: 24),
-            ),
-            Text(
-              track['artist']!,
-              style: TextStyle(color: Colors.grey, fontSize: 18),
-            ),
-            SizedBox(height: 20),
-           
-            SizedBox(height: 20),
-            // Slider for track progress
-            Slider(
-              value: _currentPosition.inSeconds.toDouble(),
-              min: 0,
-              max: _totalDuration.inSeconds.toDouble(),
-              onChanged: (value) {
-                _seekToPosition(value);
-              },
-              activeColor: Colors.green,
-              inactiveColor: Colors.grey,
-            ),
-            SizedBox(height: 20),
-            Text(
-              '${_currentPosition.inMinutes}:${_currentPosition.inSeconds % 60}'.padLeft(5, '0') +
-                  ' / ' +
-                  '${_totalDuration.inMinutes}:${_totalDuration.inSeconds % 60}'.padLeft(5, '0'),
-              style: TextStyle(color: Colors.white),
-            ),
-            SizedBox(height: 20),
-            Row(
+        padding:  EdgeInsets.only(top:screenHeight*0.08),
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-              IconButton(
-                  icon: Icon(Icons.skip_previous, color: Colors.white,size: 35,),
-                  onPressed: _previousTrack,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: 
+                  [
+                    IconButton(onPressed: ()
+                    {
+                      Navigator.pop(context);
+                    },
+                     icon: Icon(Icons.keyboard_arrow_down_sharp,size: 34,)
+                     ),
+                     SizedBox(width: screenWidth*0.5),
+                    IconButton(onPressed: ()
+                    {
+                      Navigator.pop(context);
+                    },
+                     icon: Icon(Icons.close_rounded)
+                     )
+                  ],
                 ),
-                 SizedBox(width: 20),
-               CircleAvatar(
-                radius: 30,
-                backgroundColor: Colors.green,
-                child: IconButton(
-                icon: Icon(
-                  _isPlaying ? Icons.pause : Icons.play_arrow,
-                  // color: Colors.green,
-                  size: 25,
-                  
+                SizedBox(height: 40),
+                 Text(
+                  track['name']!,
+                  style: TextStyle(color: Colors.white, fontSize: screenHeight*0.02),
                 ),
-                onPressed: _isPlaying ? _pauseTrack : _playTrack,
-                          ),
-              ),
-               SizedBox(width: 20),
-                IconButton(
-                  icon: Icon(Icons.skip_next, color: Colors.white,size: 34,),
-                  onPressed: _nextTrack,
+                Padding(
+                  padding: EdgeInsets.all(35),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(32),
+                    child: Image.network(
+                      track['image']!,
+                      height: screenHeight*0.3,
+                      // width: screenWidth*.5,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Icon(
+                          Icons.music_note,
+                          size: 100,
+                          color: Colors.grey,
+                        );
+                      },
+                    ),
+                  ),
+                ),
+                Text(
+                  track['name']!,
+                  style: TextStyle(color: Colors.white, fontSize: screenHeight*0.015),
+                ),
+                Text(
+                  track['artist']!,
+                  style: TextStyle(color: Colors.grey, fontSize: 18),
+                ),
+                SizedBox(height: 20),
+               
+            
+                Slider(
+                  value: _currentPosition.inSeconds.toDouble(),
+                  min: 0,
+                  max: _totalDuration.inSeconds.toDouble(),
+                  onChanged: (value) {
+                    _seekToPosition(value);
+                  },
+                  activeColor: Colors.green,
+                  inactiveColor: Colors.grey,
+                ),
+                SizedBox(height: 20),
+                Text(
+                  '${_currentPosition.inMinutes}:${_currentPosition.inSeconds % 60}'.padLeft(5, '0') +
+                      ' / ' +
+                      '${_totalDuration.inMinutes}:${_totalDuration.inSeconds % 60}'.padLeft(5, '0'),
+                  style: TextStyle(color: Colors.white),
+                ),
+                SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                  IconButton(
+                      icon: Icon(Icons.skip_previous, color: Colors.white,size: 35,),
+                      onPressed: _previousTrack,
+                    ),
+                     SizedBox(width: 20),
+                   CircleAvatar(
+                    radius: 30,
+                    backgroundColor: Colors.green,
+                    child: IconButton(
+                    icon: Icon(
+                      _isPlaying ? Icons.pause : Icons.play_arrow,
+                      // color: Colors.green,
+                      size: 25,
+                      
+                    ),
+                    onPressed: _isPlaying ? _pauseTrack : _playTrack,
+                              ),
+                  ),
+                   SizedBox(width: 20),
+                    IconButton(
+                      icon: Icon(Icons.skip_next, color: Colors.white,size: 34,),
+                      onPressed: _nextTrack,
+                    ),
+                  ],
                 ),
               ],
             ),
-          ],
+          ),
         ),
       ),
     );

@@ -14,6 +14,8 @@ class MixesForYou extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+      final screenHeight=MediaQuery.of(context).size.height;
+    final screenWidth=MediaQuery.of(context).size.width;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -42,6 +44,8 @@ class MixesForYou extends StatelessWidget {
   }
 
   Widget _buildMixCard(Map<String, String> mix, BuildContext context) {
+      final screenHeight=MediaQuery.of(context).size.height;
+    final screenWidth=MediaQuery.of(context).size.width;
     return Padding(
       padding: EdgeInsets.only(left: 8.0),
       child: InkWell(
@@ -50,28 +54,28 @@ class MixesForYou extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => TabPage(),
+                builder: (context) => Padding(padding: EdgeInsets.only(top: screenHeight*0.06) ,child: TabPage()),
               ),
             );
           } else if (mix['title'] == 'Mix 2') {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => Padding(padding: EdgeInsets.only(top: 60) ,child: TabPage()),
+                builder: (context) => Padding(padding: EdgeInsets.only(top: screenHeight*0.06) ,child: TabPage()),
               ),
             );
           } else if (mix['title'] == 'Mix 3') {
             Navigator.push(
               context,
                MaterialPageRoute(
-                builder: (context) => Padding(padding: EdgeInsets.only(top: 60) ,child: TabPage()),
+                builder: (context) => Padding(padding: EdgeInsets.only(top: screenHeight*0.06) ,child: TabPage()),
               ),
             );
           } else if (mix['title'] == 'Mix 4') {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => Padding(padding: EdgeInsets.only(top: 60) ,child: TabPage()),
+                builder: (context) => Padding(padding: EdgeInsets.only(top: screenWidth*0.06) ,child: TabPage()),
               ),
             );
           }
@@ -79,8 +83,8 @@ class MixesForYou extends StatelessWidget {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(8),
           child: Container(
-            width: 120,
-            height: 160, 
+            width:screenWidth*0.3 ,
+            height: screenHeight*0.16, 
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -89,7 +93,7 @@ class MixesForYou extends StatelessWidget {
                   flex: 3,
                   child: Image.asset(
                     mix['image']!,
-                    width: 120,
+                    // width: 120,
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -121,42 +125,8 @@ class MixesForYou extends StatelessWidget {
 }
 
 
-class Mix1Page extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text("Mix 1")),
-      body: Center(child: Text("Welcome to Mix 1!")),
-    );
-  }
-}
 
-class Mix2Page extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text("Mix 2")),
-      body: Center(child: Text("Welcome to Mix 2!")),
-    );
-  }
-}
 
-class Mix3Page extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text("Mix 3")),
-      body: Center(child: Text("Welcome to Mix 3!")),
-    );
-  }
-}
 
-class Mix4Page extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text("Mix 4")),
-      body: Center(child: Text("Welcome to Mix 4!")),
-    );
-  }
-}
+
+

@@ -26,6 +26,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+      final screenHeight=MediaQuery.of(context).size.height;
+    final screenWidth=MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: Colors.black,
       body: IndexedStack(
@@ -125,19 +127,21 @@ class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
   }
 
   Widget buildTabBar(BuildContext context) {
+      final screenHeight=MediaQuery.of(context).size.height;
+    final screenWidth=MediaQuery.of(context).size.width;
     return Expanded(
       child: Column(
         children: [
           Container(
-            width: MediaQuery.of(context).size.width * 0.8,
+            width: MediaQuery.of(context).size.width * 0.95,
             child: TabBar(
               controller: tabController, // Pass the tabController here
               isScrollable: true,
               indicatorColor: Colors.orange,
               labelColor: Colors.orange,
               unselectedLabelColor: Colors.white,
-              labelStyle: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-              unselectedLabelStyle: TextStyle(fontSize: 18),
+              labelStyle: TextStyle(fontSize:screenWidth*0.03 , fontWeight: FontWeight.bold),
+              unselectedLabelStyle: TextStyle(fontSize: screenWidth*0.027),
               indicatorWeight: 3,
               tabs: [
                 Tab(text: "For You"),
