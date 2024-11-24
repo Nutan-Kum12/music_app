@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:music/auth.dart'; 
 import 'package:music/pages/forget.dart';
+import 'package:music/pages/home_page.dart';
 import 'package:music/themes/navigation.dart';
 
 class LoginPage extends StatefulWidget {
@@ -27,7 +28,7 @@ class _LoginPageState extends State<LoginPage> {
       // Navigate to the home page if sign-in is successful
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) =>NavigatorScreen()),
+        MaterialPageRoute(builder: (context) =>HomePage()),
       );
     } else {
       // Display error message if sign-in fails

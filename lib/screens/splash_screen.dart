@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:music/pages/home_page.dart';
 import 'package:music/pages/register_page.dart';
 import 'package:music/pages/signup_page.dart';
+import 'package:music/themes/navigation.dart';
 
 
 class SplashScreen extends StatefulWidget {
@@ -23,7 +24,7 @@ class _SplashScreenState extends State<SplashScreen> {
     User? user =FirebaseAuth.instance.currentUser;
    if(user!=null)
    {
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>HomeScreen()));
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>HomePage()));
    }
    else{
     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>RegisterPage()));

@@ -42,11 +42,11 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   void dispose() {
-    _audioPlayer.dispose(); // Dispose of audio player to free resources
+    _audioPlayer.dispose(); 
     super.dispose();
   }
 
-  // Initialize: Fetch access token and categories
+ 
   Future<void> _initialize() async {
     setState(() {
       isLoading = true;
@@ -111,7 +111,6 @@ class _SearchPageState extends State<SearchPage> {
     }
   }
 
-  // Clear search results
   void _clearSearch() {
     setState(() {
       _searchResults = [];
@@ -120,7 +119,6 @@ class _SearchPageState extends State<SearchPage> {
     });
   }
 
-  // Play preview using just_audio
   Future<void> _playPreview(String previewUrl) async {
     if (previewUrl.isEmpty) {
       print('No preview URL available');
@@ -140,6 +138,7 @@ class _SearchPageState extends State<SearchPage> {
     return Scaffold(
       appBar: AppBar(
         title: TextField(
+          readOnly: true, // making search bar editable
           controller: _searchController,
           decoration: InputDecoration(
             hintText: 'Search for tracks...',
@@ -171,8 +170,11 @@ class _SearchPageState extends State<SearchPage> {
     );
   }
 
-  // Build categories grid
+ 
   Widget _buildCategories() {
+    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.height;
+    
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 8.0),
       child: Column(
@@ -193,9 +195,9 @@ class _SearchPageState extends State<SearchPage> {
             child: GridView.builder(
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
-                crossAxisSpacing: 10,
+                // crossAxisSpacing: 10,
                 mainAxisSpacing: 10,
-                childAspectRatio: 1.8,
+                childAspectRatio: 1.4,
               ),
               itemCount: _categories.length,
               itemBuilder: (context, index) {
@@ -205,6 +207,8 @@ class _SearchPageState extends State<SearchPage> {
                     // Implement category-specific functionality here
                   },
                   child: Image.network(
+                    // height:screenHeight*0.12,
+                    // width: screenWidth*0.4,
                     category['image']!,
                     errorBuilder: (context, error, stackTrace) {
                       return Image.asset(

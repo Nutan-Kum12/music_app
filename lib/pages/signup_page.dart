@@ -44,7 +44,7 @@ class _SignUpPageState extends State<SignUpPage> {
         await _storeUserData(name, email);
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => NavigatorScreen()),
+          MaterialPageRoute(builder: (context) => HomePage()),
         );
       } else {
         _showErrorDialog('Failed to create account. Please try again.');
